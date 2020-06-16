@@ -526,7 +526,7 @@ class TableRemover extends Remover{
 class YoutubeRemover extends Remover {
 	constructor() {
 		super();
-		this.regex = /\[youtube\(([a-zA-Z0-9_-]+)(?:,.*)*\)\]/gi;
+		this.regex = /\[youtube\(([\w-]+)(?:,.*)*\)\]/gi;
 	}
 
 	async remove(type, text) {

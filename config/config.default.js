@@ -5,7 +5,7 @@ module.exports = {
 		mode: 'passive',
 
 		passive: {
-			url: 'https://namu.khinenw.tk/',
+			url: 'https',
 			cert: false
 		},
 

@@ -116,7 +116,7 @@ class ApiHandler {
 					'User-Agent': config.request.userAgent
 				},
 				url: config.request.completeUrl +
-					fixedURIencode(message.text.replace(/^\/nq(?:@[a-zA-Z0-9]*)?[ ]*/, ''))
+					fixedURIencode(message.text.replace(/^\/nq(?:@[\w.]*)?[ ]*/, ''))
 			});
 		} catch(err) {
 			await this.logger.logError(err, chatId);
@@ -145,7 +145,7 @@ class ApiHandler {
 			return;
 		}
 
-		const url = message.text.replace(/^\/nw(?:@[a-zA-Z0-9]*)?[ ]*/, '');
+		const url = message.text.replace(/^\/nw(?:@[\w.]*)?[ ]*/, '');
 		if(url === ''){
 			await this.telegram.ignoredApiCall('sendMessage', {
 				chat_id: chatId,
@@ -313,10 +313,6 @@ class ApiHandler {
 
 		if(message.text.startsWith('/nw')){
 			await this.handleWiki(from, chatId, message);
-		}
-
-		if(message.text.startsWith('@namuwikiBot')){
-			await this.handleInline(from, chatId, message);
 		}
 	}
 }

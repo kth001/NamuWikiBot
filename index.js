@@ -5,6 +5,7 @@ const express = require('express');
 const fs = require('fs');
 const http = require('http');
 const morgan = require('morgan');
+const path = require('path');
 
 const config = require('./config/');
 const {fixedURIencode} = require('./src/Utils');
@@ -21,7 +22,7 @@ const isDev = (process.env.NODE_ENV || 'development') === 'development';
 
 const app = express();
 const inlineStore = new InlineStore();
-const namuRouter = new NamuRouter();
+const namuRouter = new NamuRouter(config.token);
 const telegram = new Telegram(isDev);
 
 const logger = new Logger(telegram, translation);
@@ -94,7 +95,7 @@ const createServer = async (app) => {
 		};
 
 		httpServer = http.createServer(options, app);
-		formData.certificate = fs.createReadStream('./cert/crt.pem');
+		formData.certificate = fs.createReadStream(path.resolve(cert, 'crt.pem'));
 
 	} else httpServer = http.createServer(app);
 
@@ -107,12 +108,10 @@ const createServer = async (app) => {
 			case 'EACCES':
 				console.error(chalk.bgRed('Permission Denied!'));
 				process.exit(1);
-				return;
 
 			case 'EADDRINUSE':
 				console.error(chalk.bgRed('Address in use!'));
 				process.exit(1);
-				return;
 		}
 
 		throw error;
